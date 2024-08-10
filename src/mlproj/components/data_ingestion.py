@@ -1,10 +1,11 @@
 import os
 import sys
+import pandas as pd
 from sklearn.model_selection import train_test_split
 from src.mlproj.exceptions import CustomException
 from src.mlproj.logger import logging
 from dataclasses import dataclass
-from src.mlproj.utils import reading_SQL_data
+# from src.mlproj.utils import reading_SQL_data
 
 
 @dataclass
@@ -23,8 +24,10 @@ class DataIngestion:
 
     def data_ingestion_initiation(self):
         try:
-            df = reading_SQL_data()
-            logging.info("Reading data from SQL DB.")
+            # df = reading_SQL_data()
+            # logging.info("Reading data from SQL DB.")
+
+            df = pd.read_csv(os.path.join('notebook/Data', 'raw.csv'))
 
             os.makedirs(os.path.dirname(
                 self.data_ingestion_config.raw_data_path), exist_ok=True)

@@ -19,21 +19,20 @@ class DataTransformationConfig:
 
 class DataTransformation:
     def __init__(self):
-        self.data_transfermation_config = DataTransformationConfig()
+        self.data_transformation_config = DataTransformationConfig()
 
     def data_transformer(self):
         try:
             data = pd.read_csv(os.path.join('notebook/Data', 'raw.csv'))
-            df = data.drop(['customerID', 'TotalCharges'],
-                           inplace=True, axis=1)
+            df = data.drop(['customerID', 'TotalCharges'], axis=1)
 
-            numerical_features = [feature for feature in df.columns
-                                  if df[feature].dtype != 'O']
-            categorical_features = [feature for feature in df.columns
-                                    if df[feature].dtype == 'O']
+            numerical_features = [
+                feature for feature in df.columns if df[feature].dtype != 'O']
+            categorical_features = [
+                feature for feature in df.columns if df[feature].dtype == 'O']
 
             num_pipeline = Pipeline(steps=[
-                ('imputer', SimpleImputer(strategy='mediana')),
+                ('imputer', SimpleImputer(strategy='median')),
                 ('scaler', StandardScaler())
             ])
 
@@ -43,8 +42,8 @@ class DataTransformation:
                 ('scaler', StandardScaler(with_mean=False))
             ])
 
-            logging.info(f"Categorical Columns:{numerical_features}")
-            logging.info(f"Numerical Columns:{categorical_features}")
+            logging.info(f"Categorical Columns: {categorical_features}")
+            logging.info(f"Numerical Columns: {numerical_features}")
 
             preprocessor = ColumnTransformer([
                 ('num_pipeline', num_pipeline, numerical_features),
@@ -67,12 +66,11 @@ class DataTransformation:
 
             target_col_name = 'Churn'
 
-            '''train data splitting'''
+            '''Train data splitting'''
             inp_train_data = train_df.drop(columns=[target_col_name], axis=1)
             target_train_data = train_df[target_col_name]
 
-            '''test data splitting'''
-
+            '''Test data splitting'''
             inp_test_data = test_df.drop(columns=[target_col_name], axis=1)
             target_test_data = test_df[target_col_name]
 
@@ -85,7 +83,7 @@ class DataTransformation:
             test_arr = np.c_[procs_test_arr, np.array(target_test_data)]
 
             save_object_file_path(
-                file_path=self.data_transfermation_config.
+                file_path=self.data_transformation_config.
                 processor_obj_file_path,
                 obj=preprocessor_obj
             )
@@ -93,7 +91,7 @@ class DataTransformation:
             return (
                 train_arr,
                 test_arr,
-                self.data_transfermation_config.processor_obj_file_path
+                self.data_transformation_config.processor_obj_file_path
             )
 
         except Exception as e:

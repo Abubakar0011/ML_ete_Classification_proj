@@ -13,11 +13,11 @@ if __name__ == '__main__':
         trn_dta_pat, tst_dta_pat = dataIngestion.data_ingestion_initiation()
 
         data_tarnsf = DataTransformation()
-        train_arr, test_arr = data_tarnsf.initiate_data_transformation(
+        data_tarnsf.initiate_data_transformation(
             trn_dta_pat, tst_dta_pat
         )
-        model_train = ModelTrainer()
-        print(model_train.initiate_model_training(train_arr, test_arr))
+        # model_train = ModelTrainer()
+        # print(model_train.initiate_model_training(train_arr, test_arr))
 
     except Exception as e:
         raise CustomException(e, sys)

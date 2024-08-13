@@ -30,7 +30,7 @@ class DataTransformation:
                 feature for feature in df.columns if df[feature].dtype != 'O']
             categorical_features = [
                 feature for feature in df.columns if df[feature].dtype == 'O']
-
+            
             num_pipeline = Pipeline(steps=[
                 ('imputer', SimpleImputer(strategy='median')),
                 ('scaler', StandardScaler())
